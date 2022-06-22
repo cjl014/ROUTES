@@ -1,0 +1,12 @@
+#leftMenu svg {
+    width: 28px;
+    height: auto;
+    cursor: 'pointer'
+}
+#leftMenu svg g {
+    fill: #fff
+}
+#leftMenu svg:hover g,
+#leftMenu [data-active=true] svg g {
+    fill: #2debd8
+}

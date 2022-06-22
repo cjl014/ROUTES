@@ -1,0 +1,56 @@
+.icon {
+    width: 40px;
+    height: 40px
+}
+aside .icon:active {
+    cursor: grabbing;
+}
+#dashboard .icon {
+    position: absolute;
+    z-index: 99;
+}
+#dashboard .icon[data-active=true] {
+    transform: scale(1.3);
+}
+#dashboard .icon_container[data-direction='right']:not(:first-child):before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    left: -40px;
+    background: #c7c7c7;
+    height: 3px;
+    
+}
+#dashboard .icon_container[data-direction='bottom']:not(:first-child):before {
+    content: '';
+    position: absolute;
+    height: 40px;
+    top: -40px;
+    background: #c7c7c7;
+    width: 3px;
+    
+}
+
+#dashboard .icon_container[data-is-stacked='true']:after {
+    content: url('../img/stack.png');
+    top: -2px;
+    position: relative;
+    left: 1px;
+    z-index: -1;
+}
+#dashboard .icon_container[data-is-stacked='true'][data-active=true]:after {
+    transform: scale(1.25);
+}
+
+.icon_options {
+    position: absolute;
+    top: -23px;
+    left: -10px;
+    z-index: 99;
+}
+
+.delete {
+    background: lightcyan;
+    border: 1px solid lightseagreen;
+    cursor: pointer;
+}

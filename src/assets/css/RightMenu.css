@@ -1,0 +1,18 @@
+#rightMenu .icon_details  {
+    padding: 2px 0 0 0;
+}
+#rightMenu hr {
+    margin: 10px 0;
+}
+#rightMenu .child_container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+#rightMenu .child_img {
+    width: 30px;
+    height: 30px;
+}
+#rightMenu .child_name {
+    padding-left: 10px;
+}
