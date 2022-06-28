@@ -1,3 +1,19 @@
+#rightMenu {
+    display: flex;
+    flex-direction: column;
+    background: #485364;
+    width: 215px;
+    height: 100vh;
+    padding: 10px 10px 0;
+
+}
+#rightMenu * {
+    box-sizing: border-box;
+}
+#rightMenu .header {
+    width: 100%;
+    height: 17px;
+}
 #rightMenu .icon_details  {
     padding: 2px 0 0 0;
 }
@@ -15,4 +31,31 @@
 }
 #rightMenu .child_name {
     padding-left: 10px;
+}
+#rightMenu .functions {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: flex-end;
+    padding-bottom: 53px;
+}
+#rightMenu .functions button {
+    width: 100%;
+    height: 25px;
+    background-color: rgb(245, 245, 245);
+    border: 1px solid lightgray;
+    border-radius: 2px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+
+}
+#rightMenu .functions button:hover {
+    background-color: #2debd8;
+    border-color: #2debd8;
 }

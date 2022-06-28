@@ -50,9 +50,9 @@ function getMaxId(maxSoFar, el) {
 
 
 export const Dashboard = (props) => {
-    const [icons, setIcons] = useState([]);
     const [iconCounter, setIconCounter] = useState(1);
     const [startPoint, setStartPoint] = useState({x:0, y:0});
+    let icons = props.icons;
 
     useEffect(()=>{
         let dashboard = document.getElementById('dashboard');
@@ -90,7 +90,7 @@ export const Dashboard = (props) => {
                     })
                 }
     
-                setIcons((prevIcons)=>{
+                props.setIcons((prevIcons)=>{
                     return newIcons;
                 })
     
@@ -108,7 +108,7 @@ export const Dashboard = (props) => {
                     })
                 }
     
-                setIcons((prevIcons)=>{
+                props.setIcons((prevIcons)=>{
                     return newIcons;
                 })
     
@@ -131,11 +131,11 @@ export const Dashboard = (props) => {
         }
 /*
         if (!isStacked) {
-            setIcons((prevIcons)=>{
+            props.setIcons((prevIcons)=>{
                 let newIcons = findAnd.changeProps(prevIcons, { id: iconId }, { isStacked: true });
             })
         } else {
-            setIcons((prevIcons)=>{
+            props.setIcons((prevIcons)=>{
                 let newIcons = findAnd.changeProps(prevIcons, { id: iconId }, { isStacked: false });
             })
         }*/
@@ -172,7 +172,7 @@ export const Dashboard = (props) => {
         console.log(prevIconIdArr);
 
 
-        setIcons((prevIcons)=>{
+        props.setIcons((prevIcons)=>{
             let newIcons
             // Set the slotRight or slotBottom
             if (iconDir == 'right') {
@@ -251,7 +251,7 @@ export const Dashboard = (props) => {
         if (icons.length === 0) {
             let parentId = -1;
             let iconId = 0;
-            setIcons(()=>(
+            props.setIcons(()=>(
                 [{type:'dashboard', key:iconId, id: iconId, name: data.name, src: data.src, details: data.details, excerpt: data.excerpt, parentId: parentId, level: 0, children: [], x: startPoint.x, y: startPoint.y, spacing: spacing, direction: 'right',childrenDirection: 'right', slotRight: false, slotBottom: true, isStacked: false, draggable: false, isVisible: true }]
             ));
         } else {  // Check if slot is available & which slot?
@@ -280,7 +280,7 @@ export const Dashboard = (props) => {
                     );
                     
 
-                    setIcons((prevIcons)=>{
+                    props.setIcons((prevIcons)=>{
                         // Set the slotRight or slotBottom
                         let newIcons = findAnd.changeProps(prevIcons, { id: slotId }, { slotRight: true });
                         let parentIcon = searchRecursive(newIcons, parentId);
@@ -315,7 +315,7 @@ export const Dashboard = (props) => {
                     let icon = searchRecursive(icons, parentId);
                     icon.children.push(newIcon);
 
-                    setIcons((prevIcons)=>{
+                    props.setIcons((prevIcons)=>{
                         // Set the slotRight or slotBottom
                         let newIcons = findAnd.changeProps(prevIcons, { id: slotId }, { slotRight: true });
 
@@ -355,7 +355,7 @@ export const Dashboard = (props) => {
                     let icon = searchRecursive(icons, parentId);
                     icon.children.push(newIcon);
 
-                    setIcons((prevIcons)=>{
+                    props.setIcons((prevIcons)=>{
                         // Set the slotRight or slotBottom
                         let newIcons = findAnd.changeProps(prevIcons, { id: slotId }, { slotBottom: true });
 
@@ -386,7 +386,7 @@ export const Dashboard = (props) => {
 
                     
 
-                    setIcons((prevIcons)=>{
+                    props.setIcons((prevIcons)=>{
                         // Set the slotRight or slotBottom
                         let newIcons = findAnd.changeProps(prevIcons, { id: slotId }, { slotBottom: true });
                         let parentIcon = searchRecursive(newIcons, parentId);
