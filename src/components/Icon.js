@@ -11,6 +11,7 @@ export const Icon = (props) => {
     let positionStyles = {};
     let positionDashStyles = {};
     let slotStyles = {};
+    let iconDragImg = document.getElementById('iconDragImg');
     if (props.x) {
         positionStyles = {
             left: props.x + 'px',
@@ -58,19 +59,54 @@ export const Icon = (props) => {
     const dragStartHandler = (e) => {
         e.dataTransfer.setData('text/plain', JSON.stringify(props));
     }
+    const touchStartHandler = (e) => {
+        console.log(e);
+        
+        iconDragImg.src = e.target.src;
+        iconDragImg.style.display = 'block';
+        
+        //iconDragImg.style.left = e.touches[0].clientX*2 - 20 + 'px';
+        //iconDragImg.style.top = e.touches[0].clientY*2 - 20 + 'px';
+        iconDragImg.style.left = e.touches[0].pageX - 20 + 'px';
+        iconDragImg.style.top = e.touches[0].pageY - 20 + 'px';
+
+        //e.dataTransfer.setData('text/plain', JSON.stringify(props));
+    }
+    const touchMoveHandler = (e) => {
+        //console.log(e);
+        //console.log(e.touches[0].clientX - 20 + 'px');
+        //iconDragImg.style.left = e.touches[0].clientX*2 - 20 + 'px';
+        //iconDragImg.style.top = e.touches[0].clientY*2 - 20 + 'px';
+        console.log(e.touches[0]);
+        console.log(e.touches[0].pageX - 20 + 'px');
+        iconDragImg.style.left = e.touches[0].pageX - 20 + 'px';
+        iconDragImg.style.top = e.touches[0].pageY - 20 + 'px';
+        //e.dataTransfer.setData('text/plain', JSON.stringify(props));
+    }
+    const touchEndHandler = (e) => {
+        console.log(e);
+        iconDragImg.style.display = 'none';
+        let el = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+        console.log(el);
+        let data = {
+            target: el,
+            data: JSON.stringify(props)
+        }
+        props.dropHandler(data);
+        //e.dataTransfer.setData('text/plain', JSON.stringify(props));
+    }
     const dragHandler = (e) => {
     }
     const dragEndHandler = (e) => {
     }
-    const dropHandler = (e) => {
-    }
+ 
 
     if (props.type == 'menu') {
-        var icon =  (<img className='icon' id={props.id} name={props.name} src={props.src} details={props.details} data-excerpt={props.excerpt} data-parentid= {props.parentId} level={props.level} data-children={props.children}  onMouseDown={mouseDownHandler} onDragStart={dragStartHandler} onDrag={dragHandler} onDragEnd={dragEndHandler} onDrop={dropHandler} draggable={isDraggable} style={positionStyles} />)
+        var icon =  (<img className='icon' id={props.id} name={props.name} src={props.src} details={props.details} data-excerpt={props.excerpt} data-parentid= {props.parentId} level={props.level} data-children={props.children}  onMouseDown={mouseDownHandler} onDragStart={dragStartHandler} onDrag={dragHandler} onDragEnd={dragEndHandler} draggable={isDraggable} onTouchStart={touchStartHandler} onTouchMove={touchMoveHandler} onTouchEnd={touchEndHandler} style={positionStyles} />)
     } else if (props.type == 'dashboard' && props.isVisible) {
         var icon =  (
             <div data-icon-id={props.id} className='icon_container' name={props.name} src={props.src} data-details={props.details} data-excerpt={props.excerpt} data-parent-id= {props.parentId} data-level={props.level} data-children={props.children} data-direction={props.direction} data-children-direction={props.childrenDirection} data-slot-right={props.slotRight} data-slot-bottom={props.slotBottom} data-is-stacked={props.isStacked} data-is-visible={props.isVisible} data-prev-icon-id={props.prevIconId} data-active={props.activeIcon.id == props.id ? true : false} style={positionDashStyles} onMouseUp={props.iconClick}  onContextMenu={contextMenuHandler} >
-                <img className='icon' id={props.id} name={props.name} src={props.src} data-details={props.details} data-excerpt={props.excerpt} data-parent-id= {props.parentId} data-level={props.level} data-children={props.children} data-direction={props.direction} data-children-direction={props.childrenDirection} data-slot-right={props.slotRight} data-slot-bottom={props.slotBottom} data-is-stacked={props.isStacked} data-is-visible={props.isVisible} data-prev-icon-id={props.prevIconId} data-active={props.activeIcon.id == props.id ? true : false} onClick={props.onClick} onMouseDown={mouseDownHandler} onDragStart={dragStartHandler} onDrag={dragHandler} onDragEnd={dragEndHandler} onDrop={dropHandler}  draggable={isDraggable}  />
+                <img className='icon' id={props.id} name={props.name} src={props.src} data-details={props.details} data-excerpt={props.excerpt} data-parent-id= {props.parentId} data-level={props.level} data-children={props.children} data-direction={props.direction} data-children-direction={props.childrenDirection} data-slot-right={props.slotRight} data-slot-bottom={props.slotBottom} data-is-stacked={props.isStacked} data-is-visible={props.isVisible} data-prev-icon-id={props.prevIconId} data-active={props.activeIcon.id == props.id ? true : false} onClick={props.onClick} onMouseDown={mouseDownHandler} onDragStart={dragStartHandler} onDrag={dragHandler} onDragEnd={dragEndHandler} draggable={isDraggable}  />
 
                 <div className="slot_right" data-icon-id={props.id} data-parent-id={props.parentId}  data-direction={props.direction} data-icon-x={props.x} data-icon-y={props.y} data-slot-right={props.slotRight} data-slot-bottom={props.slotBottom} data-is-stacked={props.isStacked} data-is-visible={props.isVisible} style={slotRightStyles}>{props.id}</div>
 
@@ -81,7 +117,8 @@ export const Icon = (props) => {
                         <button className='delete' data-icon-id={props.id} data-parent-id={props.parentId} data-prev-icon-id={props.prevIconId} data-direction={props.direction} data-children-direction={props.childrenDirection} onClick={props.onDelete}>Remove</button> 
                     </div>)
                 : ''}
-                
+              
+              
             </div>
             
             

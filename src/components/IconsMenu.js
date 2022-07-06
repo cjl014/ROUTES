@@ -48,11 +48,11 @@ export const IconsMenu = (props) => {
         iconsList = [];
     }
     return(
-        <aside style={asideStyles} >
+        <aside id='iconMenu' style={asideStyles} >
             <ul>
                 {iconsList.map((icon,i)=>(
                     <li key={'menuIcon' + i} className="icon_container" style={iconContainerStyles}>
-                        <Icon type='menu' name={icon.name} src={icon.src} details={icon.details} excerpt={icon.excerpt} draggable={true}/>
+                        <Icon type='menu' name={icon.name} src={icon.src} details={icon.details} excerpt={icon.excerpt} draggable={true} dropHandler={props.dropHandler} />
                         <div style={iconNameStyles}>{icon.name}</div>
                     </li>
                     

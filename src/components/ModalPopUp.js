@@ -10,10 +10,10 @@ export const ModalPopUp = (props) => {
     let content = '';
     switch(props.modalName){
         case 'register':
-            content = <Register/>;
+            content = <Register setSaveVisible={props.setSaveVisible}/>;
             break;
         case 'login':
-            content = <Login setLoggedIn={props.setLoggedIn}/>;
+            content = <Login setLoggedIn={props.setLoggedIn} setSaveVisible={props.setSaveVisible} />;
             break;
     }
     
@@ -27,7 +27,7 @@ export const ModalPopUp = (props) => {
             isOpen={props.modalOpen}
             onRequestClose={closeCallBack}
             contentLabel="Modal">
-                <button onClick={props.closeModal} style={{float: 'right'}} >Close</button>
+                {/*<button onClick={props.closeModal} style={{float: 'right'}} >Close</button>*/}
                 {content}
             
             </Modal>

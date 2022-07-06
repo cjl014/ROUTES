@@ -31,6 +31,7 @@ export const Register = (props) => {
                 let err = data.err;
                 if (status == 'ok') {
                     results.innerText = 'User Created Successfully';
+                    props.setSaveVisible(true);
                 }else {
                     results.innerText = err;
                 }

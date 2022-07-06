@@ -68,3 +68,80 @@
   0% {transform: rotate(0deg);}
   100% {transform: rotate(360deg);}
 }
+
+#iconDragImg {
+  opacity: 0.5;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  display: none;
+}
+
+@media (max-width: 900px) {
+  #root {
+    /*width: 200vw;*/
+    width: 100vw;
+  }
+  .App main {
+    flex-direction: column;
+  }
+  
+  .App main, 
+  #leftMenu,
+  #iconMenu,
+  #rightMenu {
+    /*height: 180vh !important;*/
+    width: 100% !important;
+    box-sizing: border-box;
+    height: auto !important;
+    
+  }
+
+  #leftMenu {
+    height: auto !important;
+  }
+
+  #leftMenu > ul,
+  #iconMenu > ul {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+  }
+
+  #leftMenu li {
+    padding-bottom: 5px !important;
+  }
+
+  #iconMenu li {
+    flex-basis: 40px;
+    flex-grow: 1;
+  }
+
+  #dashboard {
+    min-height: 390px;
+    position: relative;
+    overflow: scroll;
+  }
+  
+  #rightMenu {
+    /*flex-direction: column-reverse !important;*/
+    padding-bottom: 50px !important;
+  }
+
+  #rightMenu .functions {
+    order: 1;
+    padding-bottom: 0 !important;
+  }
+  #rightMenu .header {
+    order: 2;
+    margin-top: 15px !important;
+  }
+  #rightMenu .details {
+    order: 3;
+  }
+
+  .ReactModal__Content {
+    padding: 10px !important;
+    height: fit-content;
+  }
+}

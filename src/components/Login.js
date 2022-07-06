@@ -35,6 +35,7 @@ export const Login = (props) => {
                     results.innerText = 'You Have Logged In Successfully';
                     localStorage.setItem('username', usr);
                     props.setLoggedIn(true);
+                    props.setSaveVisible(true);
                 }else {
                     results.innerText = err;
                 }

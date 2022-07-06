@@ -55,30 +55,29 @@ export const RightMenu = (props) => {
         );
     }
 
+    let controls = (
+        <div className="functions">
+            
+            {props.saveVisible ? <button onClick={saveHandler}>SAVE</button> : ''}
+            {props.loggedIn == false && props.loginVisible ? <button onClick={loginHandler}>LOGIN</button> : ''}
+            {props.loggedIn == false && props.registerVisible ? <button onClick={registerAccHandler}>CREATE ACCOUNT</button> : ''}
+            {props.loggedIn == true ? <button onClick={logoutHandler}>LOGOUT</button> : ''}
+        </div>
+    );
+
     return(
         
         <aside id='rightMenu' >
             <div className='header' style={{color: 'white', fontSize: 10, fontWeight: 'bold', background: '#6d7a8f', padding: '2px'}}>ASSETS PANEL</div>
-            <div style={{color: 'white', fontSize: 10, padding: '10px', textAlign: 'left'}}>
+            <div className='details' style={{color: 'white', fontSize: 10, padding: '10px', textAlign: 'left'}}>
                 {!props.activeIcon.name ? 'Nothing selected' : iconName }
                 {!props.activeIcon.details ? '' : iconDetails }
                 {!props.activeIcon.children ? '' : iconChildren }
                 {!props.activeIcon.excerpt ? '' : iconExcerpt }
             
-            </div>
-              
-            {props.loggedIn == true ? (
-                <div className="functions">
-                    <button onClick={saveHandler}>SAVE</button>
-                    <button onClick={logoutHandler}>LOGOUT</button>
-                </div>
-            ) : (
-                <div className="functions">
-                    <button onClick={saveHandler}>SAVE</button>
-                    <button onClick={loginHandler}>LOGIN</button>
-                    <button onClick={registerAccHandler}>CREATE ACCOUNT</button>
-                </div>
-            )}
+            </div>    
+         
+            {controls}
             
         </aside>
     );
