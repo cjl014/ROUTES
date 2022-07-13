@@ -8,56 +8,15 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center'
 }
-const spacing = 80;
 
-function searchRecursive(data, id) {
-    let found = data.find(d => d.id === id);
-    if (!found) {
-      let i = 0;
-      while(!found && i < data.length) {
-        if (data[i].children && data[i].children.length) {
-          found = searchRecursive(data[i].children, id);
-        }
-        i++;
-      }
-    }
-    return found;
-  }
-
-  function searchRecursivePosition(data, x, y) {
-    console.log(x);console.log(y);
-    let found = data.find(d => {
-        console.log(d);
-        return ((d.x == x) && (d.y == y));
-    }
-        );
-    console.log(found);
-    if (!found) {
-      let i = 0;
-      while(!found && i < data.length) {
-        if (data[i].children && data[i].children.length) {
-          found = searchRecursivePosition(data[i].children, x, y);
-        }
-        i++;
-      }
-    }
-    return found;
-  }
-// from array
-function getMaxId(maxSoFar, el) {
-    return Math.max(maxSoFar, el.id, el.children && el.children.reduce(getMaxId, maxSoFar));
-}
 
 
 export const Dashboard = (props) => {
-    const [icons, setIcons] = useState([]);
     const [iconCounter, setIconCounter] = useState(1);
-    const [startPoint, setStartPoint] = useState({x:0, y:0});
+    
+    let icons = props.icons;
 
-    useEffect(()=>{
-        let dashboard = document.getElementById('dashboard');
-        setStartPoint({x: dashboard.offsetLeft + spacing, y: dashboard.offsetTop + spacing}); 
-    },[])
+    
     useEffect(()=>{
     
         console.log(icons);
@@ -90,7 +49,7 @@ export const Dashboard = (props) => {
                     })
                 }
     
-                setIcons((prevIcons)=>{
+                props.setIcons((prevIcons)=>{
                     return newIcons;
                 })
     
@@ -108,7 +67,7 @@ export const Dashboard = (props) => {
                     })
                 }
     
-                setIcons((prevIcons)=>{
+                props.setIcons((prevIcons)=>{
                     return newIcons;
                 })
     
@@ -131,11 +90,11 @@ export const Dashboard = (props) => {
         }
 /*
         if (!isStacked) {
-            setIcons((prevIcons)=>{
+            props.setIcons((prevIcons)=>{
                 let newIcons = findAnd.changeProps(prevIcons, { id: iconId }, { isStacked: true });
             })
         } else {
-            setIcons((prevIcons)=>{
+            props.setIcons((prevIcons)=>{
                 let newIcons = findAnd.changeProps(prevIcons, { id: iconId }, { isStacked: false });
             })
         }*/
@@ -172,7 +131,7 @@ export const Dashboard = (props) => {
         console.log(prevIconIdArr);
 
 
-        setIcons((prevIcons)=>{
+        props.setIcons((prevIcons)=>{
             let newIcons
             // Set the slotRight or slotBottom
             if (iconDir == 'right') {
@@ -224,181 +183,7 @@ export const Dashboard = (props) => {
     const dragOverHandler = (e) => {
         e.preventDefault(); // or dropHandler won't work
     }
-    const dropHandler = (e) => {
-        let data;
-
-        try {
-            data = JSON.parse(e.dataTransfer.getData("text/plain"));
-        }
-        catch {
-            return;
-        }
- 
-        let dropZone = e.target; 
-        let slotId = parseInt(dropZone.getAttribute('data-icon-id'));
-        let slotParentId = parseInt(dropZone.getAttribute('data-parent-id'));
-        let iconX = parseInt(dropZone.getAttribute('data-icon-x'));
-        let iconY = parseInt(dropZone.getAttribute('data-icon-y'));
-        let isSlotRight = dropZone.getAttribute('data-slot-right') == "true";
-        let isSlotBottom = dropZone.getAttribute('data-slot-bottom') == "true";
-        
-        console.log('dropzone:'); 
-        console.log(dropZone);
-
-
-
-        // Set initial icon
-        if (icons.length === 0) {
-            let parentId = -1;
-            let iconId = 0;
-            setIcons(()=>(
-                [{type:'dashboard', key:iconId, id: iconId, name: data.name, src: data.src, details: data.details, excerpt: data.excerpt, parentId: parentId, level: 0, children: [], x: startPoint.x, y: startPoint.y, spacing: spacing, direction: 'right',childrenDirection: 'right', slotRight: false, slotBottom: true, isStacked: false, draggable: false, isVisible: true }]
-            ));
-        } else {  // Check if slot is available & which slot?
-            if (dropZone.className == 'slot_right' && !isSlotRight) {
-                if (dropZone.getAttribute('data-direction') == 'right') {
-                    let maxId = icons.reduce(getMaxId, -1);
-                    let id = maxId + 1;
-                    let parentId = slotParentId;
-                    if (slotParentId == -1) { // if root
-                        parentId = slotId;
-                    }
-
-                    let found = searchRecursivePosition(icons, iconX + spacing, iconY);
-                    console.log(found);
-                    if (found) {
-                        console.log('occupied');
-                        return;
-                    }
-                    
-                    //let testNewIcon = {id: 333, test: 'test' };
-                    let newIcon = {type:'dashboard', key:id, id: id, name: data.name, src: data.src, details: data.details, excerpt: data.excerpt, parentId: parentId, level: 0, children: [], x: iconX + spacing, y: iconY, spacing: spacing, direction: 'right',childrenDirection: 'right', draggable: false, slotRight: false, slotBottom: false, isStacked: false, isVisible: true, prevIconId: slotId, dropZoneClass: 'slot_right' };
-
-                    // find parent id and push to children []
-                    console.log(
-                        searchRecursive(icons, parentId)
-                    );
-                    
-
-                    setIcons((prevIcons)=>{
-                        // Set the slotRight or slotBottom
-                        let newIcons = findAnd.changeProps(prevIcons, { id: slotId }, { slotRight: true });
-                        let parentIcon = searchRecursive(newIcons, parentId);
-                        parentIcon.children.push(newIcon);
-                        // Set the children
-                        return(findAnd.changeProps(newIcons, { id: parentId }, { children: parentIcon.children  }));
-                    });
-                    
-                } else if (dropZone.getAttribute('data-direction') == 'bottom') {
-                    let maxId = icons.reduce(getMaxId, -1);
-                    let id = maxId + 1;
-                    let parentId = slotId;
-                    if (slotParentId == -1) { // if root
-                        parentId = slotId;
-                    }
-                    // find parent id and push to children []
-                    console.log(
-                        searchRecursive(icons, parentId)
-                    );
-
-                    let found = searchRecursivePosition(icons, iconX + spacing, iconY);
-                    console.log(found);
-                    if (found) {
-                        console.log('occupied');
-                        return;
-                    }
-
-                    //let testNewIcon = {id: 333, test: 'test' };
-                    let newIcon = {type:'dashboard', key:id, id: id, name: data.name, src: data.src, details: data.details, excerpt: data.excerpt, parentId: parentId, level: 0, children: [], x: iconX + spacing, y: iconY, spacing: spacing, direction: 'right', childrenDirection: 'bottom', draggable: false, slotRight: false, slotBottom: false, isStacked: false, isVisible: true, prevIconId: slotId, dropZoneClass: 'slot_right' };
-
-                    // find icon id and push to children []
-                    let icon = searchRecursive(icons, parentId);
-                    icon.children.push(newIcon);
-
-                    setIcons((prevIcons)=>{
-                        // Set the slotRight or slotBottom
-                        let newIcons = findAnd.changeProps(prevIcons, { id: slotId }, { slotRight: true });
-
-                        // Set children
-                        return(findAnd.changeProps(newIcons, { id: parentId }, { children: icon.children  }));
-                    });
-                    
-                    return;
-                }
-
-            }
-            // Check if slot is available & which slot?
-            else if (dropZone.className == 'slot_bottom' && !isSlotBottom) {
-                if (dropZone.getAttribute('data-direction') == 'right') {
-                    let maxId = icons.reduce(getMaxId, -1);
-                    let id = maxId + 1;
-                    let parentId = slotId;
-                    if (slotParentId == -1) { // if root
-                        parentId = slotId;
-                    }
-                    // find parent id and push to children []
-                    console.log(
-                        searchRecursive(icons, parentId)
-                    );
-
-                    let found = searchRecursivePosition(icons, iconX, iconY + spacing);
-                    console.log(found);
-                    if (found) {
-                        console.log('occupied');
-                        return;
-                    }
-
-                    //let testNewIcon = {id: 333, test: 'test' };
-                    let newIcon = {type:'dashboard', key:id, id: id, name: data.name, src: data.src, details: data.details, excerpt: data.excerpt, parentId: parentId, level: 0, children: [], x: iconX, y: iconY + spacing, spacing: spacing, direction: 'bottom', childrenDirection: 'right', draggable: false, slotRight: false, slotBottom: false, isStacked: false, isVisible: true, prevIconId: slotId, dropZoneClass: 'slot_bottom' };
-
-                    // find icon id and push to children []
-                    let icon = searchRecursive(icons, parentId);
-                    icon.children.push(newIcon);
-
-                    setIcons((prevIcons)=>{
-                        // Set the slotRight or slotBottom
-                        let newIcons = findAnd.changeProps(prevIcons, { id: slotId }, { slotBottom: true });
-
-                        // Set children
-                        return(findAnd.changeProps(newIcons, { id: parentId }, { children: icon.children  }));
-                    });
-                } else if (dropZone.getAttribute('data-direction') == 'bottom') {
-                    let maxId = icons.reduce(getMaxId, -1);
-                    let id = maxId + 1;
-                    let parentId = slotParentId;
-                    if (slotParentId == -1) { // if root
-                        parentId = slotId;
-                    }
-                    // find parent id and push to children []
-                    console.log(
-                        searchRecursive(icons, parentId)
-                    );
-                   
-                    let found = searchRecursivePosition(icons, iconX, iconY + spacing);
-                    console.log(found);
-                    if (found) {
-                        console.log('occupied');
-                        return;
-                    }
-
-                    //let testNewIcon = {id: 333, test: 'test' };
-                    let newIcon = {type:'dashboard', key:id, id: id, name: data.name, src: data.src, details: data.details, excerpt: data.excerpt, parentId: parentId, level: 0, children: [], x: iconX , y: iconY + spacing, spacing: spacing, direction: 'bottom',childrenDirection: 'right', draggable: false, slotRight: false, slotBottom: false, isStacked: false, isVisible: true, prevIconId: slotId, dropZoneClass: 'slot_bottom' };
-
-                    
-
-                    setIcons((prevIcons)=>{
-                        // Set the slotRight or slotBottom
-                        let newIcons = findAnd.changeProps(prevIcons, { id: slotId }, { slotBottom: true });
-                        let parentIcon = searchRecursive(newIcons, parentId);
-                        parentIcon.children.push(newIcon);
-                        // Set children
-                        return(findAnd.changeProps(newIcons, { id: parentId }, { children: parentIcon.children  }));
-                    });
-                }
-
-            }
-        }
-    }
+  
 
 
     let iconEl = [];
@@ -439,6 +224,20 @@ export const Dashboard = (props) => {
         }
     }
     
+    function searchRecursive(data, id) {
+        let found = data.find(d => d.id === id);
+        if (!found) {
+          let i = 0;
+          while(!found && i < data.length) {
+            if (data[i].children && data[i].children.length) {
+              found = searchRecursive(data[i].children, id);
+            }
+            i++;
+          }
+        }
+        return found;
+      }
+      
     function dashboardClickHandler() {
         /*let ops = document.getElementsByClassName('icon_options');
   
@@ -450,7 +249,7 @@ export const Dashboard = (props) => {
     loopIcons(icons);
 
     return(
-        <div id="dashboard" style={styles}  onDragOver={dragOverHandler} onDrop={dropHandler} onClick={dashboardClickHandler}>
+        <div id="dashboard" style={styles}  onDragOver={dragOverHandler} onDrop={props.dropHandler} onClick={dashboardClickHandler}>
             {iconEl.length ? iconEl : (
                 <div id="introText">
                     <h1 style={{color: '#00b6b8'}}>No Campaigns yet.</h1>
