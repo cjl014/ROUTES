@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import img1 from './assets/img/04.png';
 import logo from './logo.svg';
 import './App.css';
@@ -8,6 +9,7 @@ import {RightMenu} from './components/RightMenu';
 import {IconsMenu} from './components/IconsMenu';
 import {Dashboard} from './components/Dashboard';
 import {ModalPopUp} from './components/ModalPopUp';
+import {ResetPass} from './components/ResetPass';
 var findAnd = require("find-and");
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
   const [loginVisible, setLoginVisible] = useState(false);
   const [registerVisible, setRegisterVisible] = useState(false);
   const [saveVisible, setSaveVisible] = useState(true);
+  const [forgotPassVisible, setForgotPassVisible] = useState(false);
   const [startPoint, setStartPoint] = useState({x:0, y:0});
   const spacing = 80;
 
@@ -82,11 +85,14 @@ function App() {
 
   useEffect(()=>{
     let dashboard = document.getElementById('dashboard');
-    setStartPoint({x: dashboard.offsetLeft + spacing, y: dashboard.offsetTop + spacing}); 
 
-    let isMobile = window.matchMedia('(max-width: 900px)').matches;
-    if (isMobile) {
-      //document.body.style.zoom = "50%";
+    if (dashboard) {
+      setStartPoint({x: dashboard.offsetLeft + spacing, y: dashboard.offsetTop + spacing}); 
+
+      let isMobile = window.matchMedia('(max-width: 900px)').matches;
+      if (isMobile) {
+        //document.body.style.zoom = "50%";
+      }
     }
 },[])
 
@@ -126,6 +132,11 @@ function App() {
   function logoutClick() {
     localStorage.removeItem("username");
     setLoggedIn(false);
+  }
+
+  function forgotPassClick() {
+    setModalName('forgotPass');
+    setModalOpen(true);
   }
 
   function saveClick() {
@@ -394,18 +405,26 @@ function getMaxId(maxSoFar, el) {
 
 
   return (
+    <Router>
     <div className="App">
-      
       <Header />
       <main>
+        <Switch>
+        <Route path='/resetPass'><ResetPass /></Route>
+
+        <Route path='/'>
         <LeftMenu onClick={leftMenuClick} activeMenu={iconsMenu} />
         <IconsMenu menu={iconsMenu} dropHandler={dropHandler} />
         <Dashboard iconClick={iconClick} activeIcon={activeIcon} icons={icons} setIcons={setIcons} dropHandler={dropHandler} />
         <RightMenu activeIcon={activeIcon} registerAccClick={registerAccClick} loginClick={loginClick} logoutClick={logoutClick} saveClick={saveClick} loggedIn={loggedIn} loginVisible={loginVisible} registerVisible={registerVisible} saveVisible={saveVisible} />
         <img id='iconDragImg' src='' />  
-        <ModalPopUp modalOpen={modalOpen} modalName={modalName} closeModal={closeModal} setLoggedIn={setLoggedIn} setSaveVisible={setSaveVisible} />
+        <ModalPopUp modalOpen={modalOpen} modalName={modalName} closeModal={closeModal} setLoggedIn={setLoggedIn} setSaveVisible={setSaveVisible} setForgotPassVisible={setForgotPassVisible} forgotPassClick={forgotPassClick} />
+        </Route>
+
+        </Switch>
       </main>
     </div>
+    </Router>
   );
 }
 

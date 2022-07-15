@@ -8,60 +8,45 @@
     box-sizing: border-box;
     font-size: 22px;
   }
-  #formContainer h2{
+  #formContainer #form_password_recovery h2{
     margin: 0px;
-  }
-  #formContainer a {
-    color: #F5F5F5;
-    text-decoration: none;
-  }
-
-  #formContainer a:hover {
-    text-decoration: underline;
-  }
-  #formContainer .forgotLink {
-    text-align: left;
-    padding-left: 2px;
-    padding-right: 10px;
-    padding-bottom: 5px;
-    font-size: 14px
   }
   #formContainer {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-  #formContainer #form{
+  #formContainer #form_password_recovery{
     max-width: 600px;
     border: 1px solid #2f3845;
     background-image: linear-gradient(to right, #485364 30%, #485364);
   }
-  #formContainer fieldset{
+  #formContainer #form_password_recovery fieldset{
     border: none;
     padding: 10px 20px 20px 20px;
     justify-content: center;
   }
-  #formContainer input{
+  #formContainer #form_password_recovery input{
     margin: 10px 10px 10px 0px;
     padding: 8px;
     font-size: 14px;
     box-sizing: border-box;
   }
-  #formContainer #fullName{
+  #formContainer #form_password_recovery #fullName{
     display: flex;
     flex-wrap: wrap;
   }
-  #formContainer #fullName input{
+  #formContainer #form_password_recovery #fullName input{
     flex-grow: 1;
   }
-  #formContainer #otherInputs{
+  #formContainer #form_password_recovery #otherInputs{
     display: flex;
     flex-wrap: wrap;
   }
-  #formContainer #otherInputs input{
+  #formContainer #form_password_recovery #otherInputs input{
     width: 100%;
   }
-  #formContainer #submit{
+  #formContainer #form_password_recovery #submit{
     display: block;
     margin: 0 auto;
     padding: 6px 0px;
@@ -74,10 +59,10 @@
     color: black;
     cursor: pointer;
   }
-  #formContainer #submit:hover{
+  #formContainer #form_password_recovery #submit:hover{
     background-color: #2debd8;
   }
-  #formContainer .results{
+  #formContainer #form_password_recovery .results{
     color: white;
     font-weight: 500;
     text-align: center;
@@ -85,3 +70,8 @@
     top: -20px;
   }
   
+  @media (min-width: 767px) {
+    #formContainer h1{
+      min-width: 460px;
+    }
+  }

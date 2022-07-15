@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Modal from 'react-modal';
 import {Register} from './Register';
 import {Login} from './Login';
+import {ForgotPass} from './ForgotPass';
 import '../assets/css/Modal.css';
 
 
@@ -13,7 +14,10 @@ export const ModalPopUp = (props) => {
             content = <Register setSaveVisible={props.setSaveVisible}/>;
             break;
         case 'login':
-            content = <Login setLoggedIn={props.setLoggedIn} setSaveVisible={props.setSaveVisible} />;
+            content = <Login setLoggedIn={props.setLoggedIn} setSaveVisible={props.setSaveVisible} forgotPassClick={props.forgotPassClick} setForgotPassVisible={props.setForgotPassVisible} />;
+            break;
+        case 'forgotPass':
+            content = <ForgotPass setForgotPassVisible={props.setForgotPassVisible}   setSaveVisible={props.setSaveVisible} />;
             break;
     }
     

@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
-import '../assets/css/Login.css';
+import '../assets/css/ForgotPass.css';
 
 
-export const Login = (props) => {
-    function login(e) {
+export const ForgotPass = (props) => {
+
+    function forgotPassProcess(e) {
         //e.preventDefault();
         console.log(e);
-        let formData = new FormData(document.getElementById('form'));
-        let url = 'https://demoroutes.lassitek.com/php/login.php';
+        let formData = new FormData(document.getElementById('form_password_recovery'));
+        let url = 'https://demoroutes.lassitek.com/php/forgotPassword.php';
         let submitBtn = document.querySelector('#formContainer #submit');
         let loader = document.querySelector('#formContainer .loader');
         let results = document.querySelector('#formContainer .results');
+        let otherInputs = document.querySelector('#otherInputs')
         console.log(formData);
 
         submitBtn.disabled = true;
@@ -29,13 +31,15 @@ export const Login = (props) => {
                 let status = data.status;
                 let msg = data.msg;
                 let err = data.err;
-                let usr = data.username;
+                //let usr = data.username;
 
                 if (status == 'ok') {
-                    results.innerText = 'You Have Logged In Successfully';
-                    localStorage.setItem('username', usr);
-                    props.setLoggedIn(true);
-                    props.setSaveVisible(true);
+                    otherInputs.style.display = 'none';
+                    submitBtn.style.display = 'none';
+                    results.innerText = 'An email has been sent to the address. Please check that email to reset your password.';
+                    //localStorage.setItem('username', usr);
+                    //props.setLoggedIn(true);
+                    //props.setSaveVisible(true);
                 }else {
                     results.innerText = err;
                 }
@@ -43,26 +47,22 @@ export const Login = (props) => {
             });
     }
 
+
+
     return(
         <div id="formContainer">
-          <form id="form" action="javascript:void(0)" method="POST" onSubmit={login} >
+           <form id="form_password_recovery" action="javascript:void(0)" data-type="recovery" method="POST" autoComplete="on" onSubmit={forgotPassProcess}>
             <fieldset>
-              <h1>Login Form</h1>
-              <div id="otherInputs">
+            <h1>Password Recovery</h1>
+            <div id="otherInputs">
                 <input type="email" name="username" id="username" placeholder="Email Address" required />
-                <input type="password" name="password" id="password" placeholder="Password" minLength='6' required />
-              </div>
-
-              <div className='forgotLink'><a href='javascript:void(0)' onClick={props.forgotPassClick} >Forgot your password?</a></div>
-              <br />
-              <input type="submit" name="submit" id="submit"  />
-              
-              
+            </div>
+            <br /><br />
+            <input type="submit" name="submit" id="submit"  />
               <div className='loader'></div>
               <div className='results'></div>
-              
             </fieldset>
-          </form>
+           </form>
         </div>
     );
 }
